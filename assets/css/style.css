@@ -34,3 +34,7 @@ body {
 	padding: 10px;
 	color: #fff;
 }
+
+input {
+	margin: 5px 0;
+}
