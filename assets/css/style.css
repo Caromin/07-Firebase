@@ -1,0 +1,30 @@
+.btn.btn-link {
+	cursor: pointer; 
+	padding: 0px;
+	font-size: 16px%;
+}
+
+.indent {
+	margin-left: 50px;
+}
+
+body {
+	background: #ffffff url("../../assets/images/ep_naturalblack.png") repeat top left;
+	color: #ffffff;
+}
+
+.jumbotron {
+	color: #000000;
+}
+
+#hangmanWord {
+	margin-top: 10%;
+}
+
+#footer {
+	bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    position: fixed;
+}
