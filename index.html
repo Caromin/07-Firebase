@@ -3,59 +3,73 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<title>Hangman Revisited</title>
+	<title>Firebase Train Tracker
+	</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
 	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
 	<link href="assets/css/reset.css" rel="stylesheet">
 	<link href="assets/css/style.css" rel="stylesheet">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.js"></script>
 </head>
 
 <body>
 <div class="jumbotron">
-	<h3 class="h2">Welcome to my reattempt on the classic hangman homework that I failed miserably at just a few months ago!</h3>
-		<small class="indent">I did not spend a ton of time ironing out the small details html/css wise for reattempts at my old homework and if you peak at my other homework, they might look similar in hmtl design, but I hope you enjoy and take a peak at the code.</small>
+	<h3 class="h2">Welcome to my reattempt on using first database and refocus on the documentation
+	</h3>
+		<small>This will also impliment moment.js to calculate time.</small><br />
 		<small>Please, take a look at my github and web profile to see the history of coding, mostly javascript projects I have worked on. 
 			<br><br><button class="btn btn-link indent" onclick="window.open('https://github.com/Caromin')">Github</button>
 			<br><button class="btn btn-link indent" onclick="window.open('https://caromin.github.io/Caromin-WebPortfolio/')">Personal Web Portfolio</button>
 		</small>
 </div>	
-<div class="container">
-	<div class="container"><div class="text-center h2 ">The theme of this hangman is korean pop music/variety shows. <p>I know, I know, give it a chance!</p></div>
-		<div id="hangmanWord" class="container text-center"><button id="startBtn" class="btn btn-primary">Start Game</button>
-<!-- where the randomword will be generated		 -->
+<div id="pushtoDisplay" class="container">
+	<div class="row">
+		<div class="col">
+			<p>Train Name</p>
 		</div>
-		<br /><br />
-		<div class="row">
-			<div class="col">
-				<p>Lives Remaining: </p><br /><p id="livesLeft">?</p>
-			</div>
-			<div class="col">
-				<p>Total Wins: </p><br /><p id="totalWins">?</p>
-			</div>
-			<div class="col">
-				<p>Total Losses: </p><br /><p id=totalLosses>?</p>
-			</div>	
-			<div class="col">
-				<p><button id="restartGame" class="btn btn-primary">Restart?</button><p>
-			</div>	
+		<div class="col">	
+			<p>Destination</p>			
+		</div>
+		<div class="col">	
+			<p>Next Arrival (HH:mm)</p>			
+		</div>
+		<div class="col">	
+			<p>Frequency (min)</p>			
 		</div>	
 	</div>
+	<div class="row">
+		<div id="trainDisplay" class="col">
+			</div>
+		<div id="destinationDisplay" class="col">	
+			</div>
+		<div id="firstDisplay" class="col">		
+			</div>
+		<div id="frequencyDisplay" class="col">	
+			</div>	
+	</div>
+</div>
+
 <br /><br />
 <hr>
 
-	<div class="container" style="margin-top: 15%;">
-		<div class="row">
-			<div class="col">
-				<div class="row"><p>Guesses: </p><br><br></div>
-				<span id="guessesDiv"></span>
-				<span id="answerDiv"></span>
-			</div>
-			<div class="col">
-<!-- ID for images, maybe add stuff in the future				 -->			
-				<div class="row"><p> </p><br><br></div>
-					<span id="hangmanImg"></span>
-			</div>	
-	</div>
+<div id="inputId" class="container">
+<p id="heading">Add a Train</p>
+<form>
+	<p>Train Name:</p>
+	<input id="trainName" type="text">
+		<br />
+	<p>Destination:</p>	
+	<input id="destination" type="text">
+		<br />
+	<p>First Train Time (HH:mm, Military Time Please):</p>	
+	<input id="firstTime" type="text">
+		<br />
+	<p>Frequency (min):</p>	
+	<input id="frequency" type="number">
+		<br />
+<!--Button to push the info-->		
+<button id="submitButton" value="submit">Push</button>
+</form>
 </div>
 
 

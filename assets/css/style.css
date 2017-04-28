@@ -9,7 +9,7 @@
 }
 
 body {
-	background: #ffffff url("../../assets/images/ep_naturalblack.png") repeat top left;
+	background: #ffffff url("../../assets/images/bodybackground.png") repeat center;
 	color: #ffffff;
 }
 
@@ -27,4 +27,10 @@ body {
     right: 0;
     width: 100%;
     position: fixed;
+}
+
+.container, .jumbotron {
+	background: #fff url("../../assets/images/gray.png") repeat center;
+	padding: 10px;
+	color: #fff;
 }
