@@ -1,124 +1,97 @@
-// Initialize personal firebase project
-  var config = {
-    apiKey: "AIzaSyBQe_qHJlfkvtfjrYTw__FxfxNdd6J7TNE",
-    authDomain: "fir-trainassignment.firebaseapp.com",
-    databaseURL: "https://fir-trainassignment.firebaseio.com",
-    storageBucket: "",
-    messagingSenderId: "226263735211"
-  };
-  firebase.initializeApp(config);
+// Initialize firebase project
+  // Initialize Firebase
+var config = {
+//personal api key for the firebase assignment project  
+  apiKey: "AIzaSyBQe_qHJlfkvtfjrYTw__FxfxNdd6J7TNE",
+// name of the auth domain location  
+  authDomain: "fir-trainassignment.firebaseapp.com",
+// realtime database tracking  
+  databaseURL: "https://fir-trainassignment.firebaseio.com",
+// id to reference the project 
+  projectId: "fir-trainassignment",
+// cloud storage for the project (optional)  
+  storageBucket: "fir-trainassignment.appspot.com",
+// cloud messaging, optional 
+  messagingSenderId: "226263735211"
+};
+
+// connect to the database where config is the default firebase to run at startup.
+// however if you wanted to have multiple databases running just imagine 
+// the setup as variable "otherApp" = firebase.initializeApp(otherAppconfig, "name here")
+firebase.initializeApp(config);
 
 //variables to be changed and pushed to storage and display
 var trainName = "";
 var destination = "";
-var firstTime = "";
-var frequency = 0;
+var trainTime = 0;
+// var displayCurrentTime = currentTime.format('LT');
+var nextArrival;
 
-//variables for connections to firebase
+//variable reference for connections to firebase
 var database = firebase.database();
-var connectionsRef = database.ref("/connections");
-var connectedRef = database.ref(".info/connected");
 
-//used to check if anyone is online
-connectedRef.on("value", function(snap) {
-	if(snap.val()) {
-//when someone is online they are pushed to the connects list		
-		var con = connectionsRef.push(true);
-//when someone leaves, they are removed from the list		
-		con.onDisconnect().remove();
-	}
+//lets the firebase database load once at window onload to grab previous information
+$(window).on("load", function() {
+  displayPrevious();
 });
 
-//displays the number of active users
-connectionsRef.on("value", function(snap) {
-	$("#activeUsers").text("There are currently: " + snap.numChildren() + " active users");
-});
-
-//waiting for the onclick of the submit button
- function storeInfo() {
-
+// if the submit button is clicked, then it will save the data to the realtime database
  $("#submitButton").on("click", function(event) {
 //prevents the page from refreshing 
-      event.preventDefault();
+  event.preventDefault();
+  storeInfo(); 
+}); 
 
+// function that runs and sets the input values to variables then pushes them to a new child_added
+// to whatever database you are referencing to, in this case "trains"
+// push() gives each json branch a generated key, set would replace whatever you are referencing
+function storeInfo() {
 //set variables to pull the values in the input value
-      trainName = $("#trainName").val().trim();
-      destination = $("#destination").val().trim();
-      firstTime = $("#firstTime").val().trim();
-      frequency = $("#frequency").val().trim();
+  trainName = $("#trainName").val().trim();
+  destination = $("#destination").val().trim();
+  trainTime = $("#firstTime").val().trim();
+// creating an if statement to stop anything other than a 4 digit number  
+    if (trainTime.length !== 4 || trainTime === NaN) {
+      alert("The time needs to be in military format, sorry. (HHmm)");
+// found online that will stop the function and give an error if this statement runs
+      throw new Error ('This is not an error. This is just to abort javascript');
+     }
+// calculating new arrivial time     
+  nextArrival = $("#nextArrival").val().trim();
+// new variable to add the traintime and frequency together  
+  newTime = parseInt(trainTime) + parseInt(nextArrival);
 
 //check to see if the values are getting pulled, they are
-      console.log(trainName);
-      console.log(destination);
-
-//------------------------------------moment.js playground
-// var currentTime = moment();
-
-//     // Assumptions
-//     var tFrequency = frequency;
-
-//     // Time is 3:30 AM
-//     var first = firstTime;
-
-//     // First Time (pushed back 1 year to make sure it comes before current time)
-//     var firstTimeConverted = moment(first, "hh:mm").subtract(1, "years");
-  
-
-//         // Difference between the times
-//     var diffTime = moment().diff(firstTimeConverted, "minutes");
-
-//         // Time apart (remainder)
-//     var tRemainder = diffTime % tFrequency;
-
-//         // Minute Until Train
-//     var tMinutesTillTrain = tFrequency - tRemainder;
-
-//     // Next Train
-//     var nextTrain = moment().add(tMinutesTillTrain, "minutes");
-
+  console.log("the information has been pushed to the database!");
 //----------------------------------------------
 
 //references the database and pushes the name and key to it
-database.ref("trains").push({
-
-        trainName: trainName,
-        destination: destination,
-        firstTime: firstTime,
-        frequency: frequency,
-        dateAdded: firebase.database.ServerValue.TIMESTAMP
-      });
+  database.ref("trains").push({
+    trainName: trainName,
+    destination: destination,
+    firstTime: trainTime,
+    nextArrival: newTime,
+    dateAdded: firebase.database.ServerValue.TIMESTAMP
+  });
 
 //resets the inputs, so previous inputs are not displayed
   $('#trainName').val("");
   $('#destination').val("");  
   $('#firstTime').val("");
-  $('#frequency').val(0);
-    });
-
-//ends the onclick function
+  $('#nextArrivalDisplay').val(0);
 };
+// end of the storeInfo function
 
 
 //function to pull previous trains from firebase database
 function displayPrevious() {
+  database.ref("trains").orderByChild("dateAdded").on("child_added", function(snapshot) {
 
-database.ref("trains").orderByChild("dateAdded").on("child_added", function(snapshot) {
+    // Change the HTML to reflect
+    $("#trainDisplay").append('<div class="display">' + snapshot.val().trainName + '<br /></div>');
+    $("#destinationDisplay").append('<div class="display">' + snapshot.val().destination + '<br /></div>');
+    $("#firstDisplay").append('<div class="display">' + snapshot.val().firstTime + '<br /></div>');
+    $("#nextArrivalDisplay").append('<div class="display">' + snapshot.val().nextArrival + '<br /></div>' );
+  });
 
-      // Change the HTML to reflect
-      $("#trainDisplay").append('<div class="display">' + snapshot.val().trainName + '<br /></div>');
-      $("#destinationDisplay").append('<div class="display">' + snapshot.val().destination + '<br /></div>');
-      $("#firstDisplay").append('<div class="display">' + snapshot.val().firstTime + '<br /></div>');
-      $("#frequencyDisplay").append('<div class="display">' + snapshot.val().frequency + 'mins<br /></div>' );
-    });
-
-}
-
-//runs the onclick function
-storeInfo();
-
-//lets the firebase database load once at window onload to grab previous information
-$(window).on("load", function() {
-displayPrevious();
-
-
-});
+},

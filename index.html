@@ -9,14 +9,15 @@
 	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
 	<link href="assets/css/reset.css" rel="stylesheet">
 	<link href="assets/css/style.css" rel="stylesheet">
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.js"></script>
+<!-- jquery file needs to be here first, incase jquery functions need to happen before the page loads	 -->
+	<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
 </head>
 
 <body>
 <div class="jumbotron">
 	<h3 class="h2">Welcome to my reattempt on using first database and refocus on the documentation.
 	</h3>
-		<small>This will also impliment moment.js to calculate time.</small><br />
+		<small>This was mostly review for me, but I have put into hiatus at the moment, so I can work on other projects. Did not impliment a working momentjs that would interact current time, first train time, and frequency.</small><br />
 		<small>Please, take a look at my github and web profile to see the history of coding, mostly javascript projects I have worked on. 
 			<br><br><button class="btn btn-link indent" onclick="window.open('https://github.com/Caromin')">Github</button>
 			<br><button class="btn btn-link indent" onclick="window.open('https://caromin.github.io/Caromin-WebPortfolio/')">Personal Web Portfolio</button>
@@ -31,10 +32,10 @@
 			<p>Destination</p>			
 		</div>
 		<div class="col">	
-			<p>Next Arrival (HH:mm)</p>			
+			<p>First Train of the Day(HH:mm)</p>			
 		</div>
 		<div class="col">	
-			<p>Frequency (min)</p>			
+			<p>Next Arrival (min)</p>			
 		</div>	
 	</div>
 	<div class="row">
@@ -44,7 +45,7 @@
 			</div>
 		<div id="firstDisplay" class="col">		
 			</div>
-		<div id="frequencyDisplay" class="col">	
+		<div id="nextArrivalDisplay" class="col">	
 			</div>	
 	</div>
 </div>
@@ -61,11 +62,11 @@
 	<p>Destination:</p>	
 	<input id="destination" type="text">
 		<br />
-	<p>First Train Time (HH:mm, Military Time Please):</p>	
+	<p>First Train of the Day Time, Military Time Please:</p>	
 	<input id="firstTime" type="text">
 		<br />
-	<p>Frequency (min):</p>	
-	<input id="frequency" type="number">
+	<p>Next Arrival (min):</p>	
+	<input id="nextArrival" type="text">
 		<br />
 <!--Button to push the info-->		
 <button id="submitButton" value="submit">Push</button>
@@ -78,16 +79,26 @@
 <!-- Basic footer     -->
 <div id="footer" class="container" style="height: 80px;">
   <footer class="text-center">
-    <p>Last updated on 04/24/2017</p><br />
+    <p>Last updated on 04/29/2017</p><br />
     <p>&copy; This Webpage was created by Christian A. using Bootstrap v4 alpha.</p>
   </footer>
 <!-- End of the footer section   -->
 </div>
 
-<!-- Personal Javascript for any javascript needed to be added in addition to Bootstraps built in .js -->
-    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+<!-- moment.js script to run code using moment.js     -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.js"></script>
+<!-- firebase js script and optional scripts for other actions e.g. firebase messaging -->
+	<script src="https://www.gstatic.com/firebasejs/3.9.0/firebase.js"></script>
+<!-- needed to run the optionally scripts below, must be first -->
+	<script src="https://www.gstatic.com/firebasejs/3.9.0/firebase-app.js"></script>
+<!-- realtime updates for the firebase database	 -->
+	<script src="https://www.gstatic.com/firebasejs/3.9.0/firebase-database.js"></script>
+<!-- cloudbased messaging through firebase	 -->
+	<script src="https://www.gstatic.com/firebasejs/3.9.0/firebase-messaging.js"></script>
+<!-- bootstrap scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+<!-- personal js page for overriding other prewritten scripts and setting specific commands	 -->
     <script src="assets/js/main.js" type="text/javascript"></script>
   </body>
 </html>
