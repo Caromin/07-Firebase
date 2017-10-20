@@ -52,26 +52,35 @@ function storeInfo() {
   trainTime = $("#firstTime").val().trim();
 // calculating new arrivial time     
   interval = $("#nextArrival").val().trim();
+  //new variable time for checking next arrival
   var time = new Date();
 // new variable to add the traintime and frequency together  
 
+  //this variable is set to first train of the day, converted each trainTime character into a string, then adding them into a moment .format
   var newTime = moment(trainTime.charAt(0).toString() + trainTime.charAt(1).toString() + trainTime.charAt(2).toString() + trainTime.charAt(3).toString(), 'Hmm').format('hh:mm A')
+  //set the interval number and made sure it was a number
   var numberedInterval = parseInt(interval);
+  // left this as an empty variable for later
   var nextArrival;
 
+  //this if statement is for if the interval number when added is pass 60 minutes
   if (parseInt(time.getMinutes()) + numberedInterval > 60) {
     adjustedHours = parseInt(time.getHours()) + 1;
+      //this if statement is used for if the new hour is past 2400 in military time
       if (adjustedHours >= 24) {
         adjustedHours = '00';
       };
     adjustedMinutes = (parseInt(time.getMinutes()) + numberedInterval) - 60;
+      //if the new adjusted time is ex. 6, I added a 0 in front to properly display moment.js format later
       if (adjustedMinutes < 10) {
         adjustedMinutes = '0' + adjustedMinutes.toString();
       }  
+    // if this runs setting nextArrival to this moment .format  
     nextArrival = moment(adjustedHours.toString() + adjustedMinutes.toString(), 'Hmm').format('hh:mm A')
     console.log('adjusted hour: ' + nextArrival);
     // console.log('adjustedMinutes: ' + adjustedMinutes);
   } else {
+    // else setting nextArrival to this moment .format
     normalMinutes = parseInt(time.getMinutes() + numberedInterval)
     nextArrival = moment(time.getHours().toString() + normalMinutes.toString(), 'Hmm').format('hh:mm A')
     console.log('normal hour: ' + nextArrival);
