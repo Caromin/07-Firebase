@@ -50,29 +50,62 @@ function storeInfo() {
   trainName = $("#trainName").val().trim();
   destination = $("#destination").val().trim();
   trainTime = $("#firstTime").val().trim();
-// creating an if statement to stop anything other than a 4 digit number  
-    if (trainTime.length !== 4 || trainTime === NaN) {
-      alert("The time needs to be in military format, sorry. (HHmm)");
-// found online that will stop the function and give an error if this statement runs
-      throw new Error ('This is not an error. This is just to abort javascript');
-     }
 // calculating new arrivial time     
-  nextArrival = $("#nextArrival").val().trim();
+  interval = $("#nextArrival").val().trim();
+  var time = new Date();
 // new variable to add the traintime and frequency together  
-  newTime = parseInt(trainTime) + parseInt(nextArrival);
 
-//check to see if the values are getting pulled, they are
-  console.log("the information has been pushed to the database!");
+  var newTime = moment(trainTime.charAt(0).toString() + trainTime.charAt(1).toString() + trainTime.charAt(2).toString() + trainTime.charAt(3).toString(), 'Hmm').format('hh:mm A')
+  var numberedInterval = parseInt(interval);
+  var nextArrival;
+
+  if (parseInt(time.getMinutes()) + numberedInterval > 60) {
+    adjustedHours = parseInt(time.getHours()) + 1;
+      if (adjustedHours >= 24) {
+        adjustedHours = '00';
+      };
+    adjustedMinutes = (parseInt(time.getMinutes()) + numberedInterval) - 60;
+      if (adjustedMinutes < 10) {
+        adjustedMinutes = '0' + adjustedMinutes.toString();
+      }  
+    nextArrival = moment(adjustedHours.toString() + adjustedMinutes.toString(), 'Hmm').format('hh:mm A')
+    console.log('adjusted hour: ' + nextArrival);
+    // console.log('adjustedMinutes: ' + adjustedMinutes);
+  } else {
+    normalMinutes = parseInt(time.getMinutes() + numberedInterval)
+    nextArrival = moment(time.getHours().toString() + normalMinutes.toString(), 'Hmm').format('hh:mm A')
+    console.log('normal hour: ' + nextArrival);
+  };
+
+  // console.log(time.getHours() + ":" + time.getMinutes() );
+
+// creating multiple or statements to not create errors
+// trainTime.length !== 4 to make sure its proper military time
+// trainTime === NaN to make sure it is a number
+// interval > 60 the time between next arrival is less than 60 minutes
+// interval === NaN  to make sure that it is a number
+// trainTime > 2400 to make sure it does not exceed standard military time
+  if (trainTime.length !== 4 || trainTime === NaN || interval > 60 || interval === NaN || trainTime > 2400 || trainTime.charAt(2) > 6 )
+    {
+      alert("The time needs to be in military format, sorry. (HHmm)");
+      // found online that will stop the function and give an error if this statement runs
+      throw new Error ('there was an error with the traintime, please check again');
+  }; 
+
+
 //----------------------------------------------
 
 //references the database and pushes the name and key to it
   database.ref("trains").push({
     trainName: trainName,
     destination: destination,
-    firstTime: trainTime,
-    nextArrival: newTime,
+    firstTime: newTime,
+    nextArrival: nextArrival,
     dateAdded: firebase.database.ServerValue.TIMESTAMP
   });
+
+//check to see if the values are getting pulled, they are
+  console.log("the information has been pushed to the database!");
 
 //resets the inputs, so previous inputs are not displayed
   $('#trainName').val("");
@@ -94,4 +127,4 @@ function displayPrevious() {
     $("#nextArrivalDisplay").append('<div class="display">' + snapshot.val().nextArrival + '<br /></div>' );
   });
 
-},
+};
