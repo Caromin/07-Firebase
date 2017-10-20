@@ -86,11 +86,11 @@ function storeInfo() {
 // interval === NaN  to make sure that it is a number
 // trainTime > 2400 to make sure it does not exceed standard military time
   if (trainTime.length !== 4 || trainTime === NaN || interval > 60 || interval === NaN || trainTime > 2400 || trainTime.charAt(2) > 6 )
-    {
+  {
       alert("The time needs to be in military format, sorry. (HHmm)");
       // found online that will stop the function and give an error if this statement runs
       throw new Error ('there was an error with the traintime, please check again');
-  }; 
+  }
 
 
 //----------------------------------------------
